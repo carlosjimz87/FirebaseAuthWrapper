@@ -63,8 +63,6 @@ dependencies {
     implementation(libs.koin.core)
     implementation(libs.koin.androidx.compose)
 
-    // Project Modules
-    implementation(project(":auth"))
 
     // Unit Testing
     testImplementation(libs.junit)
@@ -74,4 +72,8 @@ dependencies {
     // Instrumented UI Tests
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
+    androidTestImplementation(libs.androidx.compose.ui.test.junit4)
+
+    // Project Modules
+    implementation(project(":auth"))
 }
