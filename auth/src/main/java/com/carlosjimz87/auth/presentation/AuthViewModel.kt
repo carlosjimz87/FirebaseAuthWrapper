@@ -25,5 +25,12 @@ class AuthViewModel (private val authRepository: AuthRepository) : ViewModel() {
         }
     }
 
-    fun googleLogin(idToken: String) { /* Same idea */ }
+    fun googleLogin(idToken: String) {
+        viewModelScope.launch {
+            _uiState.value = _uiState.value.copy(isLoading = true, error = null)
+            val result = authRepository.signInWithGoogle(idToken)
+            _uiState.value = if (result.isSuccess) _uiState.value.copy(isLoading = false, success = true)
+            else _uiState.value.copy(isLoading = false, error = result.exceptionOrNull()?.localizedMessage)
+        }
+    }
 }

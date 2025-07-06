@@ -4,7 +4,6 @@ import kotlin.apply
 plugins {
     alias(libs.plugins.android.library)
     alias(libs.plugins.kotlin.android)
-    alias(libs.plugins.google.services)
 }
 
 val secretsProperties = Properties().apply {
@@ -17,6 +16,10 @@ val secretsProperties = Properties().apply {
 android {
     namespace = "com.carlosjimz87.auth"
     compileSdk = 35
+
+    buildFeatures {
+        buildConfig = true
+    }
 
     defaultConfig {
         minSdk = 24
@@ -66,8 +69,10 @@ dependencies {
     implementation(libs.koin.android)
     implementation(libs.koin.core)
     implementation(libs.koin.androidx.compose)
-    implementation(libs.koin.androidx.viewmodel)
 
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
+    testImplementation(libs.kotlinx.coroutines.test)
+    testImplementation(libs.mockk)
+    testImplementation(libs.turbine) // For testing StateFlows
 }
