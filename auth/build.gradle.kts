@@ -56,6 +56,9 @@ dependencies {
     implementation(libs.material)
     testImplementation(libs.junit)
 
+    // Firebase BoM
+    implementation(platform(libs.firebase.bom))
+
     // Firebase Auth
     implementation(libs.firebase.auth.ktx)
 
