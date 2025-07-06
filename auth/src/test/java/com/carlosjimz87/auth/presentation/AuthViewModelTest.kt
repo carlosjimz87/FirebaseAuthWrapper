@@ -1,6 +1,6 @@
 package com.carlosjimz87.auth.presentation
 
-import app.cash.turbine.test
+import com.carlosjimz87.auth.data.repository.FakeAuthRepository
 import com.carlosjimz87.auth.domain.model.AuthUser
 import com.carlosjimz87.auth.domain.repo.AuthRepository
 import kotlinx.coroutines.Dispatchers
@@ -10,8 +10,12 @@ import kotlinx.coroutines.test.resetMain
 import kotlinx.coroutines.test.runTest
 import kotlinx.coroutines.test.setMain
 import org.junit.After
+import org.junit.Assert.assertEquals
+import org.junit.Assert.assertFalse
+import org.junit.Assert.assertNotNull
+import org.junit.Assert.assertNull
+import org.junit.Assert.assertTrue
 import org.junit.Before
-import org.junit.Assert.*
 import org.junit.Test
 
 
@@ -22,25 +26,12 @@ class AuthViewModelTest {
 
     private lateinit var viewModel: AuthViewModel
 
-    private var simulateSuccess = true
-
-    private val fakeAuthRepository = object : AuthRepository {
-        override suspend fun signInWithEmail(email: String, password: String) =
-            if (simulateSuccess) Result.success(AuthUser("1", email, "Test", null))
-            else Result.failure(Exception("Invalid credentials"))
-
-        override suspend fun signUpWithEmail(email: String, password: String) = signInWithEmail(email, password)
-
-        override suspend fun signInWithGoogle(idToken: String) = signInWithEmail("google@test.com", "password")
-
-        override suspend fun signOut() {}
-
-        override fun getCurrentUser(): AuthUser? = null
-    }
+    private lateinit var fakeAuthRepository: FakeAuthRepository
 
     @Before
     fun setUp() {
         Dispatchers.setMain(testDispatcher)
+        fakeAuthRepository = FakeAuthRepository()
         viewModel = AuthViewModel(fakeAuthRepository)
     }
 
@@ -63,7 +54,7 @@ class AuthViewModelTest {
 
     @Test
     fun `login success updates state to success`() = runTest {
-        simulateSuccess = true
+        fakeAuthRepository.simulateSuccess = true
         viewModel.onEmailChanged("test@test.com")
         viewModel.onPasswordChanged("password")
 
@@ -77,7 +68,7 @@ class AuthViewModelTest {
 
     @Test
     fun `login failure updates state with error`() = runTest {
-        simulateSuccess = false
+        fakeAuthRepository.simulateSuccess = false
         viewModel.onEmailChanged("test@test.com")
         viewModel.onPasswordChanged("wrong")
 
@@ -91,7 +82,7 @@ class AuthViewModelTest {
 
     @Test
     fun `googleLogin success updates state to success`() = runTest {
-        simulateSuccess = true
+        fakeAuthRepository.simulateSuccess = true
         viewModel.googleLogin("fakeIdToken")
         testDispatcher.scheduler.advanceUntilIdle()
 
@@ -102,7 +93,7 @@ class AuthViewModelTest {
 
     @Test
     fun `googleLogin failure updates state with error`() = runTest {
-        simulateSuccess = false
+        fakeAuthRepository.simulateSuccess = false
         viewModel.googleLogin("fakeIdToken")
         testDispatcher.scheduler.advanceUntilIdle()
 
