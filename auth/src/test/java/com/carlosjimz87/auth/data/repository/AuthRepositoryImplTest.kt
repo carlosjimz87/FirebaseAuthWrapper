@@ -25,41 +25,45 @@ class AuthRepositoryImplTest {
     }
 
     @Test
-    fun `signInWithEmail success returns user`() = runTest {
-        coEvery { firebaseDataSource.signInWithEmail(any(), any()) } returns Result.success(testUser)
+    fun `signInWithEmail returns success when data source succeeds`() = runTest {
+        val expectedUser = AuthUser("1", "test@test.com", "Test User", null)
+        coEvery { firebaseDataSource.signInWithEmail(any(), any()) } returns Result.success(expectedUser)
 
         val result = repository.signInWithEmail("test@test.com", "password")
 
         assertTrue(result.isSuccess)
-        assertEquals(testUser, result.getOrNull())
+        assertEquals(expectedUser, result.getOrNull())
     }
 
     @Test
-    fun `signInWithEmail failure returns failure`() = runTest {
-        coEvery { firebaseDataSource.signInWithEmail(any(), any()) } returns Result.failure(Exception("Error"))
+    fun `signInWithEmail returns failure when data source fails`() = runTest {
+        coEvery { firebaseDataSource.signInWithEmail(any(), any()) } returns Result.failure(Exception("Auth error"))
 
         val result = repository.signInWithEmail("test@test.com", "password")
 
         assertTrue(result.isFailure)
+        assertEquals("Auth error", result.exceptionOrNull()?.message)
     }
 
     @Test
-    fun `signInWithGoogle success returns user`() = runTest {
-        coEvery { googleDataSource.signInWithGoogle(any()) } returns Result.success(testUser)
+    fun `signInWithGoogle returns success when data source succeeds`() = runTest {
+        val expectedUser = AuthUser("1", "test@test.com", "Test User", null)
+        coEvery { googleDataSource.signInWithGoogle(any()) } returns Result.success(expectedUser)
 
         val result = repository.signInWithGoogle("fakeIdToken")
 
         assertTrue(result.isSuccess)
-        assertEquals(testUser, result.getOrNull())
+        assertEquals(expectedUser, result.getOrNull())
     }
 
     @Test
-    fun `signInWithGoogle failure returns failure`() = runTest {
-        coEvery { googleDataSource.signInWithGoogle(any()) } returns Result.failure(Exception("Error"))
+    fun `signInWithGoogle returns failure when data source fails`() = runTest {
+        coEvery { googleDataSource.signInWithGoogle(any()) } returns Result.failure(Exception("Google auth error"))
 
         val result = repository.signInWithGoogle("fakeIdToken")
 
         assertTrue(result.isFailure)
+        assertEquals("Google auth error", result.exceptionOrNull()?.message)
     }
 
     @Test

@@ -7,6 +7,8 @@ import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.performClick
 import androidx.compose.ui.test.performTextInput
 import com.carlosjimz87.auth.domain.repo.AuthRepository
+import com.carlosjimz87.firebaseauthwrapper.fortesting.FakeAuthRepository
+import com.carlosjimz87.firebaseauthwrapper.presentation.MainActivity
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test

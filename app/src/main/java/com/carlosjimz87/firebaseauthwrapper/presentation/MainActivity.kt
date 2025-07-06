@@ -1,11 +1,11 @@
-package com.carlosjimz87.firebaseauthwrapper
+package com.carlosjimz87.firebaseauthwrapper.presentation
 
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
-
+import com.carlosjimz87.firebaseauthwrapper.composables.AuthFlow
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {

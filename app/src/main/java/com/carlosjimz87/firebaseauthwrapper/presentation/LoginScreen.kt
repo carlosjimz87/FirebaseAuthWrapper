@@ -1,4 +1,4 @@
-package com.carlosjimz87.firebaseauthwrapper
+package com.carlosjimz87.firebaseauthwrapper.presentation
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.material3.Button

@@ -1,4 +1,4 @@
-package com.carlosjimz87.firebaseauthwrapper
+package com.carlosjimz87.firebaseauthwrapper.presentation
 
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -6,6 +6,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.testTag
 
 @Composable
-fun MainContent() {
+fun MainScreen() {
     Text("Welcome to the app!", Modifier.testTag("MainScreen"))
 }

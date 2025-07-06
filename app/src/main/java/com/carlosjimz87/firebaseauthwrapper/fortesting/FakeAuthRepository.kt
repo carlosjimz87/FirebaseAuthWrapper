@@ -1,4 +1,4 @@
-package com.carlosjimz87.firebaseauthwrapper
+package com.carlosjimz87.firebaseauthwrapper.fortesting
 
 import com.carlosjimz87.auth.domain.model.AuthUser
 import com.carlosjimz87.auth.domain.repo.AuthRepository
