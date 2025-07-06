@@ -1,4 +1,4 @@
-package com.carlosjimz87.auth.data
+package com.carlosjimz87.auth.data.datasource
 
 import com.carlosjimz87.auth.data.mapper.toDomain
 import com.carlosjimz87.auth.domain.model.AuthUser
