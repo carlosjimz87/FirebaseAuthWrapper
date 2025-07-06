@@ -38,7 +38,7 @@ fun LoginScreen(
             modifier = Modifier.testTag("PasswordField")
         )
         Button(
-            onClick = { viewModel.login() },
+            onClick = { viewModel.emailLogin() },
             modifier = Modifier.testTag("SignInButton"),
             enabled = !state.isLoading
         ) {

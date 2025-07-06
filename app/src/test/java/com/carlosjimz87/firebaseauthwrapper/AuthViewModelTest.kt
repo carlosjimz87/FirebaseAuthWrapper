@@ -42,7 +42,7 @@ class AuthViewModelTest {
 
         viewModel.onEmailChanged("test@test.com")
         viewModel.onPasswordChanged("password")
-        viewModel.login()
+        viewModel.emailLogin()
 
         testDispatcher.scheduler.advanceUntilIdle()
 
@@ -57,7 +57,7 @@ class AuthViewModelTest {
 
         viewModel.onEmailChanged("test@test.com")
         viewModel.onPasswordChanged("wrongpassword")
-        viewModel.login()
+        viewModel.emailLogin()
 
         testDispatcher.scheduler.advanceUntilIdle()
 

@@ -1,8 +1,6 @@
 package com.carlosjimz87.auth.presentation
 
 import com.carlosjimz87.auth.data.repository.FakeAuthRepository
-import com.carlosjimz87.auth.domain.model.AuthUser
-import com.carlosjimz87.auth.domain.repo.AuthRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.StandardTestDispatcher
@@ -58,7 +56,7 @@ class AuthViewModelTest {
         viewModel.onEmailChanged("test@test.com")
         viewModel.onPasswordChanged("password")
 
-        viewModel.login()
+        viewModel.emailLogin()
         testDispatcher.scheduler.advanceUntilIdle()
 
         assertTrue(viewModel.uiState.value.success)
@@ -72,7 +70,7 @@ class AuthViewModelTest {
         viewModel.onEmailChanged("test@test.com")
         viewModel.onPasswordChanged("wrong")
 
-        viewModel.login()
+        viewModel.emailLogin()
         testDispatcher.scheduler.advanceUntilIdle()
 
         assertFalse(viewModel.uiState.value.success)
