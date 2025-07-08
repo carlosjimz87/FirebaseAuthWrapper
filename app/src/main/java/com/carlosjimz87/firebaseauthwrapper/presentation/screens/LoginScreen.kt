@@ -7,8 +7,8 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.getValue
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.testTag
 import com.carlosjimz87.auth.presentation.AuthViewModel
@@ -20,8 +20,8 @@ fun LoginScreen(
 ) {
     val state by viewModel.uiState.collectAsState()
 
-    if (state.success) {
-        LaunchedEffect(Unit) {
+    LaunchedEffect(state.success) {
+        if (state.success) {
             onAuthSuccess()
         }
     }

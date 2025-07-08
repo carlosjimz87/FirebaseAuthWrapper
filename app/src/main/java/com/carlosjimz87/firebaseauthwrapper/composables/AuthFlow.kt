@@ -10,7 +10,5 @@ import org.koin.androidx.compose.koinViewModel
 @Composable
 fun AuthFlow(onAuthSuccess: () -> Unit) {
     val viewModel: AuthViewModel = koinViewModel()
-    val uiState by viewModel.uiState.collectAsState()
-
     LoginScreen(viewModel = viewModel, onAuthSuccess = onAuthSuccess)
 }

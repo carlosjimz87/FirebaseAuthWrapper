@@ -13,11 +13,6 @@ class RealFirebaseAuthDataSource(private val auth: FirebaseAuth) : FirebaseAuthD
         auth.currentUser?.toDomain() ?: throw Exception("User not found")
     }
 
-    override suspend fun signUpWithEmail(email: String, password: String): Result<AuthUser> = runCatching {
-        auth.createUserWithEmailAndPassword(email, password).await()
-        auth.currentUser?.toDomain() ?: throw Exception("User not found")
-    }
-
     override fun getCurrentUser(): AuthUser? = auth.currentUser?.toDomain()
 
     override suspend fun signOut() {

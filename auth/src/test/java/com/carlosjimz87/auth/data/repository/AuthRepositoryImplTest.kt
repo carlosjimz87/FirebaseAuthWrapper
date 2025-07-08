@@ -1,86 +1,99 @@
 package com.carlosjimz87.auth.data.repository
 
-import com.carlosjimz87.auth.data.datasource.RealFirebaseAuthDataSource
-import com.carlosjimz87.auth.data.datasource.RealGoogleAuthDataSource
-import com.carlosjimz87.auth.domain.model.AuthUser
+import com.carlosjimz87.auth.Constants
+import com.carlosjimz87.auth.di.authModule
+import com.carlosjimz87.auth.di.testAuthModule
+import com.carlosjimz87.auth.domain.repo.AuthRepository
+import io.mockk.*
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.test.StandardTestDispatcher
+import kotlinx.coroutines.test.resetMain
 import kotlinx.coroutines.test.runTest
+import kotlinx.coroutines.test.setMain
+import org.junit.After
 import org.junit.Assert.*
 import org.junit.Before
 import org.junit.Test
-import io.mockk.*
+import org.koin.core.context.GlobalContext.startKoin
+import org.koin.core.context.GlobalContext.stopKoin
+import org.koin.java.KoinJavaComponent.getKoin
 
 @OptIn(ExperimentalCoroutinesApi::class)
 class AuthRepositoryImplTest {
 
-    private lateinit var repository: AuthRepositoryImpl
-    private val firebaseDataSource = mockk<RealFirebaseAuthDataSource>()
-    private val googleDataSource = mockk<RealGoogleAuthDataSource>()
+    private val testDispatcher = StandardTestDispatcher()
 
-    private val testUser = AuthUser("1", "test@test.com", "Test User", null)
+    private lateinit var repository: AuthRepository
 
     @Before
-    fun setup() {
-        repository = AuthRepositoryImpl(firebaseDataSource, googleDataSource)
+    fun setUp() {
+        Dispatchers.setMain(testDispatcher)
+
+        startKoin {
+            modules(
+                listOf(
+                    authModule,      // production bindings
+                    testAuthModule   // override fakes
+                )
+            )
+        }
+
+        repository = getKoin().get()
+    }
+
+    @After
+    fun tearDown() {
+        Dispatchers.resetMain()
+        stopKoin()
     }
 
     @Test
-    fun `signInWithEmail returns success when data source succeeds`() = runTest {
-        val expectedUser = AuthUser("1", "test@test.com", "Test User", null)
-        coEvery { firebaseDataSource.signInWithEmail(any(), any()) } returns Result.success(expectedUser)
-
-        val result = repository.signInWithEmail("test@test.com", "password")
+    fun `signInWithEmail returns success when credentials are valid`() = runTest {
+        val result = repository.signInWithEmail(Constants.SUCCESS_EMAIL, Constants.SUCCESS_PASSWORD)
 
         assertTrue(result.isSuccess)
-        assertEquals(expectedUser, result.getOrNull())
+        assertEquals(Constants.SUCCESS_EMAIL, result.getOrNull()?.email)
     }
 
     @Test
-    fun `signInWithEmail returns failure when data source fails`() = runTest {
-        coEvery { firebaseDataSource.signInWithEmail(any(), any()) } returns Result.failure(Exception("Auth error"))
-
-        val result = repository.signInWithEmail("test@test.com", "password")
+    fun `signInWithEmail returns failure when credentials are invalid`() = runTest {
+        val result = repository.signInWithEmail(Constants.FAILURE_EMAIL, Constants.FAILURE_PASSWORD)
 
         assertTrue(result.isFailure)
-        assertEquals("Auth error", result.exceptionOrNull()?.message)
+        assertEquals("Fake authentication failed", result.exceptionOrNull()?.message)
     }
 
     @Test
-    fun `signInWithGoogle returns success when data source succeeds`() = runTest {
-        val expectedUser = AuthUser("1", "test@test.com", "Test User", null)
-        coEvery { googleDataSource.signInWithGoogle(any()) } returns Result.success(expectedUser)
-
-        val result = repository.signInWithGoogle("fakeIdToken")
+    fun `signInWithGoogle returns success when token is valid`() = runTest {
+        val result = repository.signInWithGoogle(Constants.SUCCESS_ID_TOKEN)
 
         assertTrue(result.isSuccess)
-        assertEquals(expectedUser, result.getOrNull())
+        assertEquals(Constants.SUCCESS_ID_TOKEN, result.getOrNull()?.uid)
     }
 
     @Test
-    fun `signInWithGoogle returns failure when data source fails`() = runTest {
-        coEvery { googleDataSource.signInWithGoogle(any()) } returns Result.failure(Exception("Google auth error"))
-
-        val result = repository.signInWithGoogle("fakeIdToken")
+    fun `signInWithGoogle returns failure when token is invalid`() = runTest {
+        val result = repository.signInWithGoogle(Constants.FAILURE_ID_TOKEN)
 
         assertTrue(result.isFailure)
-        assertEquals("Google auth error", result.exceptionOrNull()?.message)
+        assertEquals("Fake Google authentication failed", result.exceptionOrNull()?.message)
     }
 
     @Test
-    fun `getCurrentUser returns user`() {
-        every { firebaseDataSource.getCurrentUser() } returns testUser
+    fun `getCurrentUser returns user after login`() = runTest {
+        repository.signInWithEmail(Constants.SUCCESS_EMAIL, Constants.SUCCESS_PASSWORD)
 
-        val result = repository.getCurrentUser()
-
-        assertEquals(testUser, result)
+        val user = repository.getCurrentUser()
+        assertEquals(Constants.SUCCESS_EMAIL, user?.email)
     }
 
     @Test
-    fun `signOut calls firebase signOut`() = runTest {
-        coEvery { firebaseDataSource.signOut() } just Runs
-
+    fun `signOut clears current user`() = runTest {
+        repository.signInWithEmail(Constants.SUCCESS_EMAIL, Constants.SUCCESS_PASSWORD)
         repository.signOut()
 
-        coVerify(exactly = 1) { firebaseDataSource.signOut() }
+        val user = repository.getCurrentUser()
+        assertNull(user)
     }
 }

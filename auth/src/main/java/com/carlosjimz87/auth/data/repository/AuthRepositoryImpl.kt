@@ -14,10 +14,6 @@ class AuthRepositoryImpl(
         return firebase.signInWithEmail(email, password)
     }
 
-    override suspend fun signUpWithEmail(email: String, password: String): Result<AuthUser> {
-        return firebase.signUpWithEmail(email, password)
-    }
-
     override suspend fun signInWithGoogle(idToken: String): Result<AuthUser> =
         google?.signInWithGoogle(idToken) ?: Result.failure(UnsupportedOperationException("Google Sign-In not available"))
 

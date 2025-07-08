@@ -1,14 +1,19 @@
 package com.carlosjimz87.auth.data.datasource
 
+import com.carlosjimz87.auth.Constants
 import com.google.android.gms.tasks.Task
 import com.google.firebase.auth.AuthResult
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
-import io.mockk.*
+import io.mockk.coEvery
+import io.mockk.every
+import io.mockk.mockk
+import io.mockk.mockkStatic
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.tasks.await
 import kotlinx.coroutines.test.runTest
-import org.junit.Assert.*
+import org.junit.Assert.assertEquals
+import org.junit.Assert.assertTrue
 import org.junit.Before
 import org.junit.Test
 
@@ -34,14 +39,14 @@ class FirebaseAuthDataSourceTest {
         coEvery { task.await() } returns authResult
         every { firebaseAuth.signInWithEmailAndPassword(any(), any()) } returns task
         every { firebaseUser.uid } returns "1"
-        every { firebaseUser.email } returns "test@test.com"
+        every { firebaseUser.email } returns Constants.TEST_EMAIL
         every { firebaseUser.displayName } returns "Test"
         every { firebaseUser.photoUrl } returns null
 
-        val result = dataSource.signInWithEmail("test@test.com", "password")
+        val result = dataSource.signInWithEmail(Constants.TEST_EMAIL, Constants.TEST_PASSWORD)
 
         assertTrue(result.isSuccess)
-        assertEquals("test@test.com", result.getOrNull()?.email)
+        assertEquals(Constants.TEST_EMAIL, result.getOrNull()?.email)
     }
 
     @Test
@@ -52,7 +57,7 @@ class FirebaseAuthDataSourceTest {
         coEvery { task.await() } throws Exception("Auth failed")
         every { firebaseAuth.signInWithEmailAndPassword(any(), any()) } returns task
 
-        val result = dataSource.signInWithEmail("test@test.com", "password")
+        val result = dataSource.signInWithEmail(Constants.TEST_EMAIL, Constants.TEST_PASSWORD)
 
         assertTrue(result.isFailure)
     }

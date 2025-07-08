@@ -1,5 +1,6 @@
 package com.carlosjimz87.auth.presentation
 
+import androidx.annotation.VisibleForTesting
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.carlosjimz87.auth.domain.model.AuthUser
@@ -9,9 +10,9 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 
-class AuthViewModel (private val authRepository: AuthRepository) : ViewModel() {
+open class AuthViewModel (private val authRepository: AuthRepository) : ViewModel() {
 
-    private val _uiState = MutableStateFlow(UiState())
+    protected val _uiState = MutableStateFlow(UiState())
     val uiState: StateFlow<UiState> = _uiState
 
     fun onEmailChanged(email: String) { _uiState.value = _uiState.value.copy(email = email) }
@@ -35,5 +36,10 @@ class AuthViewModel (private val authRepository: AuthRepository) : ViewModel() {
                 _uiState.value.copy(isLoading = false, error = result.exceptionOrNull()?.localizedMessage)
             }
         }
+    }
+
+    @VisibleForTesting
+    protected open fun resetState() {
+        _uiState.value = UiState()
     }
 }

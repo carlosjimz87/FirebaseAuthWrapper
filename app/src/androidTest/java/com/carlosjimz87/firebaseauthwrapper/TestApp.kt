@@ -1,9 +1,18 @@
 package com.carlosjimz87.firebaseauthwrapper
 
+import android.app.Application
+import com.carlosjimz87.auth.di.authModule
 import com.carlosjimz87.firebaseauthwrapper.di.testAuthModule
-import org.koin.core.module.Module
+import org.koin.android.ext.koin.androidContext
+import org.koin.core.context.startKoin
 
-class TestApplication : App() {
-    override val appModules: List<Module>
-        get() = listOf(testAuthModule)
+class TestApp : Application() {
+    override fun onCreate() {
+        super.onCreate()
+        startKoin {
+            androidContext(this@TestApp)
+            modules(authModule)
+            modules(testAuthModule)
+        }
+    }
 }

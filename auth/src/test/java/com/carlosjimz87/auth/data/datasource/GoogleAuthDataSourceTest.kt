@@ -1,5 +1,6 @@
 package com.carlosjimz87.auth.data.datasource
 
+import com.carlosjimz87.auth.Constants
 import com.google.android.gms.tasks.Task
 import com.google.firebase.auth.AuthResult
 import com.google.firebase.auth.FirebaseAuth
@@ -37,15 +38,15 @@ class GoogleAuthDataSourceTest {
         coEvery { task.await() } returns authResult
 
         every { firebaseAuth.signInWithCredential(any()) } returns task
-        every { firebaseUser.uid } returns "1"
-        every { firebaseUser.email } returns "google@test.com"
-        every { firebaseUser.displayName } returns "Google User"
+        every { firebaseUser.uid } returns Constants.SUCCESS_ID_TOKEN
+        every { firebaseUser.email } returns Constants.GOOGLE_USER_EMAIL
+        every { firebaseUser.displayName } returns Constants.GOOGLE_USER_NAME
         every { firebaseUser.photoUrl } returns null
 
-        val result = dataSource.signInWithGoogle("fakeIdToken")
+        val result = dataSource.signInWithGoogle(Constants.SUCCESS_ID_TOKEN)
 
         Assert.assertTrue(result.isSuccess)
-        Assert.assertEquals("google@test.com", result.getOrNull()?.email)
+        Assert.assertEquals(Constants.GOOGLE_USER_EMAIL, result.getOrNull()?.email)
     }
 
     @Test
@@ -57,7 +58,7 @@ class GoogleAuthDataSourceTest {
 
         every { firebaseAuth.signInWithCredential(any()) } returns task
 
-        val result = dataSource.signInWithGoogle("fakeIdToken")
+        val result = dataSource.signInWithGoogle(Constants.FAILURE_ID_TOKEN)
 
         Assert.assertTrue(result.isFailure)
     }
