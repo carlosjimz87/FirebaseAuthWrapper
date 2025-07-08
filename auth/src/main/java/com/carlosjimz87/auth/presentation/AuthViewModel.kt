@@ -1,6 +1,5 @@
 package com.carlosjimz87.auth.presentation
 
-import androidx.annotation.VisibleForTesting
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.carlosjimz87.auth.domain.model.AuthUser
@@ -38,8 +37,11 @@ open class AuthViewModel (private val authRepository: AuthRepository) : ViewMode
         }
     }
 
-    @VisibleForTesting
-    protected open fun resetState() {
-        _uiState.value = UiState()
+    fun signOut() {
+        viewModelScope.launch {
+            authRepository.signOut()
+            _uiState.value = UiState() // Resetea estado si quieres
+        }
     }
+
 }

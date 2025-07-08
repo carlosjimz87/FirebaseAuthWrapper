@@ -3,6 +3,7 @@ package com.carlosjimz87.auth.presentation
 import com.carlosjimz87.auth.Constants
 import com.carlosjimz87.auth.di.authModule
 import com.carlosjimz87.auth.di.testAuthModule
+import com.carlosjimz87.auth.domain.repo.AuthRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.StandardTestDispatcher
@@ -106,5 +107,46 @@ class AuthViewModelTest {
         assertFalse(viewModel.uiState.value.success)
         assertFalse(viewModel.uiState.value.isLoading)
         assertNotNull(viewModel.uiState.value.error)
+    }
+
+    @Test
+    fun `signOut resets user state`() = runTest {
+        viewModel.onEmailChanged(Constants.SUCCESS_EMAIL)
+        viewModel.onPasswordChanged(Constants.SUCCESS_PASSWORD)
+        viewModel.emailLogin()
+        testDispatcher.scheduler.advanceUntilIdle()
+
+        viewModel.signOut()
+        testDispatcher.scheduler.advanceUntilIdle()
+
+        val state = viewModel.uiState.value
+        val authRepository: AuthRepository = getKoin().get()
+
+        assertFalse(state.success)
+        assertNull(authRepository.getCurrentUser())
+    }
+
+    @Test
+    fun `retry login after failure updates state to success`() = runTest {
+        viewModel.onEmailChanged(Constants.FAILURE_EMAIL)
+        viewModel.onPasswordChanged(Constants.FAILURE_PASSWORD)
+        viewModel.emailLogin()
+        testDispatcher.scheduler.advanceUntilIdle()
+        assertFalse(viewModel.uiState.value.success)
+
+        viewModel.onEmailChanged(Constants.SUCCESS_EMAIL)
+        viewModel.onPasswordChanged(Constants.SUCCESS_PASSWORD)
+        viewModel.emailLogin()
+        testDispatcher.scheduler.advanceUntilIdle()
+
+        assertTrue(viewModel.uiState.value.success)
+    }
+
+    @Test
+    fun `signOut without prior login does not crash or change state`() = runTest {
+        viewModel.signOut()
+        testDispatcher.scheduler.advanceUntilIdle()
+        val state = viewModel.uiState.value
+        assertFalse(state.success)
     }
 }
