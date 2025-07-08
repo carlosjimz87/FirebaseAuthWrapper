@@ -1,4 +1,4 @@
-package com.carlosjimz87.firebaseauthwrapper.presentation
+package com.carlosjimz87.firebaseauthwrapper.presentation.screens
 
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable

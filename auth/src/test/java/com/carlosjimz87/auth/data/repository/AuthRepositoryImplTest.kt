@@ -1,7 +1,7 @@
 package com.carlosjimz87.auth.data.repository
 
-import com.carlosjimz87.auth.data.datasource.FirebaseAuthDataSource
-import com.carlosjimz87.auth.data.datasource.google.GoogleAuthDataSource
+import com.carlosjimz87.auth.data.datasource.RealFirebaseAuthDataSource
+import com.carlosjimz87.auth.data.datasource.RealGoogleAuthDataSource
 import com.carlosjimz87.auth.domain.model.AuthUser
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runTest
@@ -14,8 +14,8 @@ import io.mockk.*
 class AuthRepositoryImplTest {
 
     private lateinit var repository: AuthRepositoryImpl
-    private val firebaseDataSource = mockk<FirebaseAuthDataSource>()
-    private val googleDataSource = mockk<GoogleAuthDataSource>()
+    private val firebaseDataSource = mockk<RealFirebaseAuthDataSource>()
+    private val googleDataSource = mockk<RealGoogleAuthDataSource>()
 
     private val testUser = AuthUser("1", "test@test.com", "Test User", null)
 

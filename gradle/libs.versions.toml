@@ -5,6 +5,7 @@ composeCompiler = "1.5.13"
 activityCompose = "1.10.1"
 composeBom = "2024.09.00"
 koin = "3.5.6"
+koinTest = "3.5.0"
 kotlin = "2.0.21"
 coreKtx = "1.16.0"
 junit = "4.13.2"
@@ -15,7 +16,12 @@ kotlinxCoroutinesTest = "1.8.1"
 material = "1.12.0"
 gs = "4.4.3"
 firebaseBom = "33.13.0"
+mockitoAndroid = "5.5.0"
+mockitoCore = "5.5.0"
+mockitoKotlin = "5.1.0"
+mockitoKotlinVersion = "5.1.0"
 mockk = "1.13.10"
+mockkAndroid = "1.13.10"
 turbine = "1.0.0"
 material3 = "1.2.1"
 composeRuntime = "1.6.7"
@@ -26,6 +32,8 @@ uiTestJunit4Android = "1.8.3"
 # Core
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
 androidx-appcompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "appcompat" }
+koin-test = { module = "io.insert-koin:koin-test", version.ref = "koinTest" }
+koin-test-junit4 = { module = "io.insert-koin:koin-test-junit4", version.ref = "koinTest" }
 material = { group = "com.google.android.material", name = "material", version.ref = "material" }
 
 # Compose
@@ -53,7 +61,10 @@ junit = { group = "junit", name = "junit", version.ref = "junit" }
 androidx-junit = { group = "androidx.test.ext", name = "junit", version.ref = "junitVersion" }
 androidx-espresso-core = { group = "androidx.test.espresso", name = "espresso-core", version.ref = "espressoCore" }
 kotlinx-coroutines-test = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-test", version.ref = "kotlinxCoroutinesTest" }
+mockito-android = { module = "org.mockito:mockito-android", version.ref = "mockitoAndroid" }
+mockito-kotlin = { module = "org.mockito.kotlin:mockito-kotlin", version.ref = "mockitoKotlinVersion" }
 mockk = { module = "io.mockk:mockk", version.ref = "mockk" }
+mockk-android = { module = "io.mockk:mockk-android", version.ref = "mockkAndroid" }
 turbine = { module = "app.cash.turbine:turbine", version.ref = "turbine" }
 androidx-ui-test-junit4-android = { group = "androidx.compose.ui", name = "ui-test-junit4-android", version.ref = "uiTestJunit4Android" }
 

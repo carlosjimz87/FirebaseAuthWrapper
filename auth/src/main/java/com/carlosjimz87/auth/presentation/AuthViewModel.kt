@@ -25,7 +25,6 @@ class AuthViewModel (private val authRepository: AuthRepository) : ViewModel() {
         authenticate { authRepository.signInWithGoogle(idToken) }
     }
 
-
     private fun authenticate(authCall: suspend () -> Result<AuthUser>) {
         viewModelScope.launch {
             _uiState.value = _uiState.value.copy(isLoading = true, error = null)

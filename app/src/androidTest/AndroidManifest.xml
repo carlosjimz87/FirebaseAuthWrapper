@@ -1,0 +1,5 @@
+<manifest xmlns:android="http://schemas.android.com/apk/res/android">
+    <application
+        android:name="com.carlosjimz87.firebaseauthwrapper.TestApplication"
+        android:label="Test App" />
+</manifest>

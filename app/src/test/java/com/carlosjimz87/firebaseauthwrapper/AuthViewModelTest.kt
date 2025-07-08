@@ -1,7 +1,8 @@
 package com.carlosjimz87.firebaseauthwrapper
 
+import com.carlosjimz87.auth.Constants
 import com.carlosjimz87.auth.presentation.AuthViewModel
-import com.carlosjimz87.firebaseauthwrapper.fortesting.FakeAuthRepository
+import com.carlosjimz87.auth.data.repository.FakeAuthRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.StandardTestDispatcher
@@ -41,8 +42,8 @@ class AuthViewModelTest {
     fun `email login success updates state to success`() = runTest {
         fakeAuthRepository.simulateSuccess = true
 
-        viewModel.onEmailChanged("test@test.com")
-        viewModel.onPasswordChanged("password")
+        viewModel.onEmailChanged(Constants.TEST_EMAIL)
+        viewModel.onPasswordChanged(Constants.TEST_PASS)
         viewModel.emailLogin()
         testDispatcher.scheduler.advanceUntilIdle()
 
@@ -55,8 +56,8 @@ class AuthViewModelTest {
     fun `email login failure updates state with error`() = runTest {
         fakeAuthRepository.simulateSuccess = false
 
-        viewModel.onEmailChanged("test@test.com")
-        viewModel.onPasswordChanged("wrongpassword")
+        viewModel.onEmailChanged(Constants.TEST_EMAIL)
+        viewModel.onPasswordChanged(Constants.TEST_WRONG_PASS)
         viewModel.emailLogin()
 
         testDispatcher.scheduler.advanceUntilIdle()

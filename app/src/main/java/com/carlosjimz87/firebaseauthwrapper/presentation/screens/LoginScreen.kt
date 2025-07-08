@@ -1,4 +1,4 @@
-package com.carlosjimz87.firebaseauthwrapper.presentation
+package com.carlosjimz87.firebaseauthwrapper.presentation.screens
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.material3.Button
@@ -43,6 +43,13 @@ fun LoginScreen(
             enabled = !state.isLoading
         ) {
             Text("Sign In")
+        }
+        Button(
+            onClick = { viewModel.googleLogin("fakeIdToken") }, // In real app, you get token from Google
+            modifier = Modifier.testTag("GoogleSignInButton"),
+            enabled = !state.isLoading
+        ) {
+            Text("Sign In with Google")
         }
 
         if (state.isLoading) {

@@ -15,14 +15,14 @@ import org.junit.Test
 @OptIn(ExperimentalCoroutinesApi::class)
 class FirebaseAuthDataSourceTest {
 
-    private lateinit var dataSource: FirebaseAuthDataSource
+    private lateinit var dataSource: RealFirebaseAuthDataSource
     private val firebaseAuth = mockk<FirebaseAuth>(relaxed = true)
     private val firebaseUser = mockk<FirebaseUser>(relaxed = true)
     private val authResult = mockk<AuthResult>(relaxed = true)
 
     @Before
     fun setup() {
-        dataSource = FirebaseAuthDataSource(firebaseAuth)
+        dataSource = RealFirebaseAuthDataSource(firebaseAuth)
     }
 
     @Test

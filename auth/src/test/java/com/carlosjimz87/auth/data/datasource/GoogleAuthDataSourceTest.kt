@@ -1,5 +1,4 @@
-package com.carlosjimz87.auth.data.datasource.google
-
+package com.carlosjimz87.auth.data.datasource
 
 import com.google.android.gms.tasks.Task
 import com.google.firebase.auth.AuthResult
@@ -12,22 +11,21 @@ import io.mockk.mockkStatic
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.tasks.await
 import kotlinx.coroutines.test.runTest
-import org.junit.Assert.assertEquals
-import org.junit.Assert.assertTrue
+import org.junit.Assert
 import org.junit.Before
 import org.junit.Test
 
 @OptIn(ExperimentalCoroutinesApi::class)
 class GoogleAuthDataSourceTest {
 
-    private lateinit var dataSource: GoogleAuthDataSource
+    private lateinit var dataSource: RealGoogleAuthDataSource
     private val firebaseAuth = mockk<FirebaseAuth>(relaxed = true)
     private val firebaseUser = mockk<FirebaseUser>(relaxed = true)
     private val authResult = mockk<AuthResult>(relaxed = true)
 
     @Before
     fun setup() {
-        dataSource = GoogleAuthDataSource(firebaseAuth)
+        dataSource = RealGoogleAuthDataSource(firebaseAuth)
     }
 
     @Test
@@ -46,8 +44,8 @@ class GoogleAuthDataSourceTest {
 
         val result = dataSource.signInWithGoogle("fakeIdToken")
 
-        assertTrue(result.isSuccess)
-        assertEquals("google@test.com", result.getOrNull()?.email)
+        Assert.assertTrue(result.isSuccess)
+        Assert.assertEquals("google@test.com", result.getOrNull()?.email)
     }
 
     @Test
@@ -61,6 +59,6 @@ class GoogleAuthDataSourceTest {
 
         val result = dataSource.signInWithGoogle("fakeIdToken")
 
-        assertTrue(result.isFailure)
+        Assert.assertTrue(result.isFailure)
     }
 }
