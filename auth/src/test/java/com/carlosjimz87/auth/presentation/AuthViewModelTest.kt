@@ -37,8 +37,8 @@ class AuthViewModelTest {
         startKoin {
             modules(
                 listOf(
-                    authModule,       // módulo de producción
-                    testAuthModule    // sobrescribe los data sources
+                    authModule,       // production module
+                    testAuthModule    // overwrite datasources for testing
                 )
             )
         }

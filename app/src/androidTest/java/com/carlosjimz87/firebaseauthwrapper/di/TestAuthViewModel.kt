@@ -12,51 +12,51 @@ class TestAuthViewModel(repo: AuthRepository) : AuthViewModel(repo) {
     override fun onEvent(event: AuthUiEvent) {
         when (event) {
             is AuthUiEvent.GoogleLogin -> {
-                println("🟡 Evento: GoogleLogin con token = ${event.idToken}")
+                println("🟡 Event: GoogleLogin with token = ${event.idToken}")
 
                 _uiState.update {
-                    println("🔄 Actualizando estado: isLoading = true")
+                    println("🔄 Updating state: isLoading = true")
                     it.copy(isLoading = true, error = null)
                 }
 
                 if (event.idToken == Constants.SUCCESS_ID_TOKEN) {
                     _uiState.update {
-                        println("✅ Login con Google exitoso. Estado final: success = true")
+                        println("✅ Google login successful. Final state: success = true")
                         it.copy(success = true, isLoading = false)
                     }
                 } else {
                     _uiState.update {
-                        println("❌ Login con Google fallido. Estado final: error = Google login failed")
+                        println("❌ Google login failed. Final state: error = Google login failed")
                         it.copy(error = "Google login failed", isLoading = false)
                     }
                 }
             }
 
             is AuthUiEvent.SubmitLogin -> {
-                println("🟡 Evento: SubmitLogin con email = ${uiState.value.form.email} y password = ${uiState.value.form.password}")
+                println("🟡 Event: SubmitLogin with email = ${uiState.value.form.email} and password = ${uiState.value.form.password}")
 
                 if (uiState.value.form.email == Constants.SUCCESS_EMAIL &&
                     uiState.value.form.password == Constants.SUCCESS_PASSWORD
                 ) {
                     _uiState.update {
-                        println("✅ Login exitoso. Estado final: success = true")
+                        println("✅ Login successful. Final state: success = true")
                         it.copy(success = true, isLoading = false)
                     }
                 } else {
                     _uiState.update {
-                        println("❌ Login fallido. Estado final: error = Login failed")
+                        println("❌ Login failed. Final state: error = Login failed")
                         it.copy(error = "Login failed", isLoading = false)
                     }
                 }
             }
 
             else -> {
-                println("📨 Evento delegado al ViewModel base: ${event::class.simpleName}")
+                println("📨 Event delegated to base ViewModel: ${event::class.simpleName}")
                 super.onEvent(event)
             }
         }
 
-        println("🧪 Estado tras evento: ${_uiState.value}")
+        println("🧪 State after event: ${_uiState.value}")
     }
 
     fun reset() {

@@ -40,18 +40,18 @@ class LoginFlowTest {
     fun fullLoginFlow_worksAsExpected_withGoogleTokenSelection() {
         val rule = composeTestRule
 
-        // Paso 1: Login fallido
-        println("✅ Paso 1: Probando login fallido con credenciales incorrectas...")
+        // Step 1: Failed login
+        println("✅ Step 1: Testing failed login with invalid credentials...")
         rule.onNodeWithTag("EmailField").performTextClearance()
         rule.onNodeWithTag("PasswordField").performTextClearance()
         rule.onNodeWithTag("EmailField").performTextInput(Constants.FAILURE_EMAIL)
         rule.onNodeWithTag("PasswordField").performTextInput(Constants.FAILURE_PASSWORD)
         rule.onNodeWithTag("SignInButton").performClick()
         rule.onNodeWithTag("ErrorText").assertIsDisplayed()
-        println("✅ Login fallido detectado correctamente.")
+        println("✅ Failed login correctly detected.")
 
-        // Paso 2: Login exitoso
-        println("✅ Paso 2: Probando login exitoso con credenciales correctas...")
+        // Step 2: Successful login
+        println("✅ Step 2: Testing successful login with valid credentials...")
         rule.onNodeWithTag("EmailField").performTextClearance()
         rule.onNodeWithTag("PasswordField").performTextClearance()
         rule.onNodeWithTag("EmailField").performTextInput(Constants.SUCCESS_EMAIL)
@@ -59,27 +59,27 @@ class LoginFlowTest {
         rule.onNodeWithTag("SignInButton").performClick()
         rule.waitUntilNodeCount(tag = "MainScreen", count = 1)
         rule.onNodeWithTag("MainScreen").assertIsDisplayed()
-        println("✅ Login correcto y navegación exitosa a MainScreen.")
+        println("✅ Successful login and navigation to MainScreen.")
         rule.waitForIdle()
 
-        // Paso 3: Logout
-        println("✅ Paso 3: Probando logout desde la MainScreen...")
+        // Step 3: Logout
+        println("✅ Step 3: Testing logout from MainScreen...")
         rule.onNodeWithTag("LogoutButton").performClick()
-        println("✅ Logout realizado correctamente.")
+        println("✅ Logout successfully executed.")
 
-        // Paso 4: Selección de token válido
-        println("✅ Paso 4: Seleccionando token válido para login con Google...")
+        // Step 4: Token selection for Google login
+        println("✅ Step 4: Selecting valid token for Google login...")
         rule.onNodeWithTag("SelectTokenButton").performClick()
         rule.onNodeWithText("Valid Token").performClick()
         rule.onNodeWithTag("SelectedTokenBadge").assertIsDisplayed()
-        println("✅ Token seleccionado correctamente.")
+        println("✅ Token selected successfully.")
 
-        // Paso 5: Login con Google
-        println("✅ Paso 5: Probando login con Google...")
+        // Step 5: Google login
+        println("✅ Step 5: Testing Google login...")
         rule.onNodeWithTag("GoogleSignInButton").performClick()
         rule.waitUntilNodeCount(tag = "MainScreen", count = 1)
         rule.onNodeWithTag("MainScreen").assertIsDisplayed()
-        println("✅ Login con Google exitoso y navegación a MainScreen.")
+        println("✅ Google login successful and navigation to MainScreen.")
     }
 
     // Helper reutilizable
