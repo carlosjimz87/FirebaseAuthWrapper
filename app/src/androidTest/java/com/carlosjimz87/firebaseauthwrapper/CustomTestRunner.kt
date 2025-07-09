@@ -6,6 +6,7 @@ import androidx.test.runner.AndroidJUnitRunner
 
 class CustomTestRunner : AndroidJUnitRunner() {
     override fun newApplication(cl: ClassLoader?, className: String?, context: Context?): Application {
-        return super.newApplication(cl, TestApp::class.java.name, context)
+        // Use your TestApp instead of the default Application class
+        return super.newApplication(cl, "com.carlosjimz87.firebaseauthwrapper.TestApp", context)
     }
 }

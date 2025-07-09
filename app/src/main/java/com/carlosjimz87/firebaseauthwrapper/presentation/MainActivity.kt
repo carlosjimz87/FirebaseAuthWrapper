@@ -7,7 +7,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
-import com.carlosjimz87.firebaseauthwrapper.composables.AuthFlow
+import com.carlosjimz87.firebaseauthwrapper.presentation.composables.AuthFlow
 import com.carlosjimz87.firebaseauthwrapper.presentation.screens.MainScreen
 
 class MainActivity : ComponentActivity() {
@@ -17,7 +17,7 @@ class MainActivity : ComponentActivity() {
             var isLoggedIn by remember { mutableStateOf(false) }
 
             if (isLoggedIn) {
-                MainScreen()
+                MainScreen(onLogout = { isLoggedIn = false })
             } else {
                 AuthFlow(onAuthSuccess = { isLoggedIn = true })
             }

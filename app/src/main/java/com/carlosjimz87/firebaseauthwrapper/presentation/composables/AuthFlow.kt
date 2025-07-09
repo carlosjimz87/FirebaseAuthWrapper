@@ -1,4 +1,4 @@
-package com.carlosjimz87.firebaseauthwrapper.composables
+package com.carlosjimz87.firebaseauthwrapper.presentation.composables
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState

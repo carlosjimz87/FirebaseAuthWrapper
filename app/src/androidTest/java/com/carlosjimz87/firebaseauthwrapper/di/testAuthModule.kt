@@ -7,7 +7,6 @@ import com.carlosjimz87.auth.data.datasource.interfaces.GoogleAuthDataSource
 import com.carlosjimz87.auth.data.repository.AuthRepositoryImpl
 import com.carlosjimz87.auth.domain.repo.AuthRepository
 import com.carlosjimz87.auth.presentation.AuthViewModel
-import com.carlosjimz87.firebaseauthwrapper.scenario.TestAuthViewModel
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
 
